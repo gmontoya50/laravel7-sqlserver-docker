@@ -1,4 +1,4 @@
-# PHP development environment with PHP-FPM, Nginx and MySQL to run Laravel applications using Docker and Docker Compose
+# PHP development environment with namoshek/php-mssql:7.4-fpm, Nginx and MySQL to run Laravel applications using Docker and Docker Compose
 
 You need to have Docker and Docker Compose installed on your server to proceed using this PHP environment.
 
@@ -94,7 +94,7 @@ Finally, the default working dir as `/var/www` and the newly created user are se
 
 ### PHP service
 
-The `app` service will build an image called `laravel-image`, based on the `Dockerfile` previously created. The container defined by this service will run a php-fpm server to parse PHP code and send the results back to the nginx service, which will be running on a separate container. The mysql service defines a container running a MySQL 5.7 server. All these services will share a bridge network named `app-network`.
+The `app` service will build an image called `laravel-image`, based on the `Dockerfile` previously created. The container defined by this service will run a namoshek/php-mssql:7.4-fpm server to parse PHP code and send the results back to the nginx service, which will be running on a separate container. The mysql service defines a container running a MySQL 5.7 server. All these services will share a bridge network named `app-network`.
 
 The application files will be synchronized on both the `app` and the `nginx` services via bind mounts. Bind mounts are useful in development environments because they allow for a performant two-way sync between host machine and containers.
 

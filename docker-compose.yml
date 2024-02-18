@@ -8,18 +8,18 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: laravel-image
-    container_name: laravel-app
+    container_name: laravel-app-${STAGE}
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
-      - ./:/var/www
+      - ./src:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
 
   db:
     image: mysql:5.7
-    container_name: laravel-db
+    container_name: laravel-db-${STAGE}
     restart: unless-stopped
     ports:
       - "3306:3306"
@@ -38,15 +38,28 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: laravel-nginx
+    container_name: laravel-nginx-${STAGE}
     restart: unless-stopped
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      - ./src:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    user: root   #####################   <<<<<<<<< IMPORTANT!!!!!  ############
+    ports:
+    #   host-port:container-port 
+      - "1433:1433"
+    environment:
+      # SA_USERNAME: sa
+      SA_PASSWORD: Dev1234!
+      ACCEPT_EULA: Y
+    volumes:
+      - ./volumes/data2:/var/opt/mssql/data
 
 networks:
   app-network:
